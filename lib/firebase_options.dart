@@ -25,7 +25,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -69,15 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'auth-4f2c0.appspot.com',
     iosClientId: '305317874931-7fej3td3sb9pc9g0nvdpl9p3fncpqrtn.apps.googleusercontent.com',
     iosBundleId: 'com.example.authApp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCMe_dqoaPj3RR-3VCXlyTKXa4FBOkqwm8',
-    appId: '1:305317874931:ios:0ce335b2003831fc3a3b86',
-    messagingSenderId: '305317874931',
-    projectId: 'auth-4f2c0',
-    storageBucket: 'auth-4f2c0.appspot.com',
-    iosClientId: '305317874931-6401e42k8bhanv8rjnu5aeu5rj8e9ekn.apps.googleusercontent.com',
-    iosBundleId: 'com.example.authApp.RunnerTests',
   );
 }

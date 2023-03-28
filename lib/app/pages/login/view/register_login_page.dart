@@ -86,6 +86,7 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextFormField(
+                      obscureText: true,
                       controller: controller.passwordCadastroController,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
@@ -104,6 +105,7 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextFormField(
+                      obscureText: true,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                       decoration: const InputDecoration(
@@ -137,8 +139,15 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const ElevatedButtomGradient(
-                    text: 'Entrar',
+                  ElevatedButtomGradient(
+                    text: 'Cadastrar',
+                    onPressed: () {
+                      controller.createUserWithEmailAndPassword(
+                        email: controller.emailCadastroController.text,
+                        password: controller.passwordCadastroController.text,
+                        name: controller.nameCadastroController.text,
+                      );
+                    },
                   ),
                 ],
               ),

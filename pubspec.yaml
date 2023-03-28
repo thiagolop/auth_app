@@ -38,6 +38,8 @@ dependencies:
   firebase_core: ^2.8.0
   provider: ^6.0.5
   validatorless: ^1.2.3
+  firebase_auth: ^4.3.0
+  fluttericon: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:auth_app/app/core/ui/styles/colors_app.dart';
 import 'package:auth_app/app/core/ui/styles/text_app.dart';
 import 'package:auth_app/app/pages/login/controller/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/zocial_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -25,8 +26,8 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
             Padding(
               padding: const EdgeInsets.only(top: 80, bottom: 20),
               child: Container(
-                height: 300,
-                width: 300,
+                height: 200,
+                width: 200,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -111,7 +112,7 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/registerlogin');
+                    Navigator.pushNamed(context, '/checkuserlogin');
                   },
                   child: RichText(
                       text: TextSpan(
@@ -131,7 +132,29 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                const Expanded(child: Divider(color: Colors.black, height: 20, thickness: 1, indent: 20, endIndent: 20)),
+                Text(
+                  'ou entre com',
+                  style: context.textStyles.textMedium.copyWith(
+                    color: context.colorsApp.primaryColorDark,
+                    fontSize: 14,
+                  ),
+                ),
+                const Expanded(child: Divider(color: Colors.black, height: 20, thickness: 1, indent: 20, endIndent: 20)),
+              ],
+            ),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Zocial.facebook), color: context.colorsApp.primaryColorDark),
+                const SizedBox(width: 50),
+                IconButton(onPressed: () {}, icon: Image.asset('assets/images/google-icon.png')),
+              ],
+            ),
           ],
         ),
       );
