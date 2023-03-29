@@ -46,38 +46,44 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormField(
-                controller: controller.emailController,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'Digite seu email',
-                  prefixIcon: Icon(Icons.email),
+              child: Form(
+                child: TextFormField(
+                  key: controller.formKeyLoginEmail,
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Digite seu email',
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                  validator: Validatorless.multiple([
+                    Validatorless.required('Campo obrigatório'),
+                    Validatorless.email('Email inválido'),
+                  ]),
                 ),
-                validator: Validatorless.multiple([
-                  Validatorless.required('Campo obrigatório'),
-                  Validatorless.email('Email inválido'),
-                ]),
               ),
             ),
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextFormField(
-                controller: controller.passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                  hintText: 'Digite sua senha',
-                  prefixIcon: Icon(Icons.lock),
+              child: Form(
+                key: controller.formKeyLoginPassword,
+                child: TextFormField(
+                  controller: controller.passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                  decoration: const InputDecoration(
+                    labelText: 'Senha',
+                    hintText: 'Digite sua senha',
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  validator: Validatorless.multiple([
+                    Validatorless.required('Campo obrigatório'),
+                    Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+                  ]),
                 ),
-                validator: Validatorless.multiple([
-                  Validatorless.required('Campo obrigatório'),
-                  Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                ]),
               ),
             ),
             const SizedBox(height: 8),
@@ -103,8 +109,20 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
               ),
             ),
             const SizedBox(height: 16),
-            const ElevatedButtomGradient(
+            ElevatedButtomGradient(
               text: 'Entrar',
+              onPressed: () async {
+                if (!controller.formKeyLoginEmail.currentState!.validate()) {
+                  await controller.login(email: controller.emailController.text, password: controller.passwordController.text);
+                  if (context.mounted) Navigator.pushNamed(context, '/home');
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Preencha todos os campos corretamente'),
+                    ),
+                  );
+                }
+              },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -112,7 +130,7 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/checkuserlogin');
+                    Navigator.pushNamed(context, '/registerlogin');
                   },
                   child: RichText(
                       text: TextSpan(
@@ -150,9 +168,14 @@ class _SignInLoginPageState extends State<SignInLoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Zocial.facebook), color: context.colorsApp.primaryColorDark),
+                IconButton(onPressed: () {}, icon: const Icon(Zocial.appstore), color: Colors.black),
                 const SizedBox(width: 50),
-                IconButton(onPressed: () {}, icon: Image.asset('assets/images/google-icon.png')),
+                IconButton(
+                    onPressed: () async {
+                      await controller.signInWithGoogle();
+                      if (context.mounted) Navigator.pushNamed(context, '/home');
+                    },
+                    icon: Image.asset('assets/images/google-icon.png')),
               ],
             ),
           ],

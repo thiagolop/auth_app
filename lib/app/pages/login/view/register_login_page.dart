@@ -52,101 +52,122 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextFormField(
-                      controller: controller.emailCadastroController,
-                      onChanged: (text) {
-                        setState(() {
-                          controller.emailCadastroController.selection = TextSelection.fromPosition(TextPosition(offset: controller.emailCadastroController.text.length));
-                        });
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Digite seu email',
-                        prefixIcon: const Icon(Icons.email),
-                        suffixIcon: controller.emailCadastroController.text.isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(Icons.clear),
-                                onPressed: () {
-                                  setState(() {
-                                    controller.emailCadastroController.clear();
-                                  });
-                                },
-                              )
-                            : null,
+                    child: Form(
+                      key: controller.formKeyCadastroEmail,
+                      child: TextFormField(
+                        controller: controller.emailCadastroController,
+                        onChanged: (text) {
+                          setState(() {
+                            controller.emailCadastroController.selection = TextSelection.fromPosition(TextPosition(offset: controller.emailCadastroController.text.length));
+                          });
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          hintText: 'Digite seu email',
+                          prefixIcon: const Icon(Icons.email),
+                          suffixIcon: controller.emailCadastroController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(Icons.clear),
+                                  onPressed: () {
+                                    setState(() {
+                                      controller.emailCadastroController.clear();
+                                    });
+                                  },
+                                )
+                              : null,
+                        ),
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Campo obrigatório'),
+                          Validatorless.email('Email inválido'),
+                        ]),
                       ),
-                      validator: Validatorless.multiple([
-                        Validatorless.required('Campo obrigatório'),
-                        Validatorless.email('Email inválido'),
-                      ]),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextFormField(
-                      obscureText: true,
-                      controller: controller.passwordCadastroController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                        hintText: 'Digite sua senha',
-                        prefixIcon: Icon(Icons.lock),
+                    child: Form(
+                      key: controller.formKeyCadastroPassword,
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: controller.passwordCadastroController,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                        decoration: const InputDecoration(
+                          labelText: 'Senha',
+                          hintText: 'Digite sua senha',
+                          prefixIcon: Icon(Icons.lock),
+                        ),
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Campo obrigatório'),
+                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+                        ]),
                       ),
-                      validator: Validatorless.multiple([
-                        Validatorless.required('Campo obrigatório'),
-                        Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                      ]),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextFormField(
-                      obscureText: true,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                      decoration: const InputDecoration(
-                        labelText: 'Confirmar senha',
-                        hintText: 'Digite sua senha',
-                        prefixIcon: Icon(Icons.lock),
+                    child: Form(
+                      key: controller.formKeyCadastroConfirmPassword,
+                      child: TextFormField(
+                        obscureText: true,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                        decoration: const InputDecoration(
+                          labelText: 'Confirmar senha',
+                          hintText: 'Digite sua senha',
+                          prefixIcon: Icon(Icons.lock),
+                        ),
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Campo obrigatório'),
+                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+                          Validatorless.compare(controller.passwordCadastroController, 'As senhas não são iguais'),
+                        ]),
                       ),
-                      validator: Validatorless.multiple([
-                        Validatorless.required('Campo obrigatório'),
-                        Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                        Validatorless.compare(controller.passwordCadastroController, 'As senhas não são iguais'),
-                      ]),
                     ),
                   ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: TextFormField(
-                      controller: controller.nameCadastroController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
-                      decoration: const InputDecoration(
-                        labelText: 'Nome',
-                        hintText: 'Digite seu nome',
-                        prefixIcon: Icon(Icons.person),
+                    child: Form(
+                      key: controller.formKeyCadastroName,
+                      child: TextFormField(
+                        controller: controller.nameCadastroController,
+                        keyboardType: TextInputType.emailAddress,
+                        style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                        decoration: const InputDecoration(
+                          labelText: 'Nome',
+                          hintText: 'Digite seu nome',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Campo obrigatório'),
+                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+                        ]),
                       ),
-                      validator: Validatorless.multiple([
-                        Validatorless.required('Campo obrigatório'),
-                        Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                      ]),
                     ),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButtomGradient(
                     text: 'Cadastrar',
-                    onPressed: () {
-                      controller.createUserWithEmailAndPassword(
-                        email: controller.emailCadastroController.text,
-                        password: controller.passwordCadastroController.text,
-                        name: controller.nameCadastroController.text,
-                      );
+                    onPressed: () async {
+                      if (controller.validateRegister() == true) {
+                        await controller.createUserWithEmailAndPassword(
+                          email: controller.emailCadastroController.text,
+                          password: controller.passwordCadastroController.text,
+                          name: controller.nameCadastroController.text,
+                        );
+                        if (context.mounted) Navigator.of(context).pushReplacementNamed('/home');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Preencha todos os campos corretamente'),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
