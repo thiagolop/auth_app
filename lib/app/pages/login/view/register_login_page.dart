@@ -4,7 +4,6 @@ import 'package:auth_app/app/core/ui/styles/text_app.dart';
 import 'package:auth_app/app/pages/login/controller/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:validatorless/validatorless.dart';
 
 class RegisterLoginPage extends StatefulWidget {
   const RegisterLoginPage({super.key});
@@ -24,37 +23,38 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
           backgroundColor: context.colorsApp.primaryColorDark,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            context.colorsApp.primaryColorDark,
-                            context.colorsApp.primaryColorLight,
-                          ],
+          child: Form(
+            key: controller.formKeyRegister,
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40, bottom: 20),
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              context.colorsApp.primaryColorDark,
+                              context.colorsApp.primaryColorLight,
+                            ],
+                          ),
+                          shape: BoxShape.circle,
                         ),
-                        shape: BoxShape.circle,
+                        child: Image.asset('assets/images/image2.png', height: 300),
                       ),
-                      child: Image.asset('assets/images/image2.png', height: 300),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                  Text('Cadastro', style: context.textStyles.textBold.copyWith(fontSize: 30)),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Form(
-                      key: controller.formKeyCadastroEmail,
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Text('Cadastro', style: context.textStyles.textBold.copyWith(fontSize: 30)),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: controller.emailCadastroController,
                         onChanged: (text) {
                           setState(() {
@@ -78,19 +78,21 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                                 )
                               : null,
                         ),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Campo obrigatório'),
-                          Validatorless.email('Email inválido'),
-                        ]),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Campo obrigatório';
+                          } else if (!value.contains('@')) {
+                            return 'Email inválido';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Form(
-                      key: controller.formKeyCadastroPassword,
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: true,
                         controller: controller.passwordCadastroController,
                         keyboardType: TextInputType.emailAddress,
@@ -100,19 +102,21 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                           hintText: 'Digite sua senha',
                           prefixIcon: Icon(Icons.lock),
                         ),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Campo obrigatório'),
-                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                        ]),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Campo obrigatório';
+                          } else if (value.length < 6) {
+                            return 'Senha deve ter no mínimo 6 caracteres';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Form(
-                      key: controller.formKeyCadastroConfirmPassword,
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: true,
                         keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
@@ -121,20 +125,23 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                           hintText: 'Digite sua senha',
                           prefixIcon: Icon(Icons.lock),
                         ),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Campo obrigatório'),
-                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                          Validatorless.compare(controller.passwordCadastroController, 'As senhas não são iguais'),
-                        ]),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Campo obrigatório';
+                          } else if (value.length < 6) {
+                            return 'Senha deve ter no mínimo 6 caracteres';
+                          } else if (value != controller.passwordCadastroController.text) {
+                            return 'As senhas não são iguais';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Form(
-                      key: controller.formKeyCadastroName,
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         controller: controller.nameCadastroController,
                         keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
@@ -143,34 +150,30 @@ class _RegisterLoginPageState extends State<RegisterLoginPage> {
                           hintText: 'Digite seu nome',
                           prefixIcon: Icon(Icons.person),
                         ),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Campo obrigatório'),
-                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-                        ]),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Campo obrigatório';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButtomGradient(
-                    text: 'Cadastrar',
-                    onPressed: () async {
-                      if (controller.validateRegister() == true) {
-                        await controller.createUserWithEmailAndPassword(
-                          email: controller.emailCadastroController.text,
-                          password: controller.passwordCadastroController.text,
-                          name: controller.nameCadastroController.text,
-                        );
-                        if (context.mounted) Navigator.of(context).pushReplacementNamed('/home');
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Preencha todos os campos corretamente'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    ElevatedButtomGradient(
+                      text: 'Cadastrar',
+                      onPressed: () async {
+                        if (controller.formKeyRegister.currentState!.validate()) {
+                          await controller.createUserWithEmailAndPassword(
+                            email: controller.emailCadastroController.text,
+                            password: controller.passwordCadastroController.text,
+                            name: controller.nameCadastroController.text,
+                          );
+                          if (context.mounted) Navigator.of(context).pushReplacementNamed('/home');
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

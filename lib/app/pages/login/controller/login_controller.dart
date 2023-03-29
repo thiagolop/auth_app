@@ -9,12 +9,8 @@ class LoginController extends ChangeNotifier {
   final _emailCadastroController = TextEditingController();
   final _passwordCadastroController = TextEditingController();
   final _nameCadastroController = TextEditingController();
-  final formKeyCadastroEmail = GlobalKey<FormState>();
-  final formKeyCadastroPassword = GlobalKey<FormState>();
-  final formKeyCadastroConfirmPassword = GlobalKey<FormState>();
-  final formKeyCadastroName = GlobalKey<FormState>();
-  final formKeyLoginEmail = GlobalKey<FormState>();
-  final formKeyLoginPassword = GlobalKey<FormState>();
+  final formKeySignIn = GlobalKey<FormState>();
+  final formKeyRegister = GlobalKey<FormState>();
 
   TextEditingController get emailCadastroController => _emailCadastroController;
   TextEditingController get passwordCadastroController => _passwordCadastroController;
@@ -62,25 +58,6 @@ class LoginController extends ChangeNotifier {
     );
   }
 
-  // Future<UserCredential> signInWithGoogle() async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn(
-  //     scopes: [
-  //       'email',
-  //       'https://www.googleapis.com/auth/contacts.readonly',
-  //     ],
-  //   ).signIn();
-  //   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-  //   final credential = GoogleAuthProvider.credential(
-  //     accessToken: googleAuth?.accessToken,
-  //     idToken: googleAuth?.idToken,
-  //   );
-  //   if (googleUser != null) {
-  //     googleAuth;
-  //   }
-  //   return await auth.signInWithCredential(credential);
-  // }
-
   Future signInWithGoogle() async {
     final googleSignIn = GoogleSignIn();
     try {
@@ -106,25 +83,6 @@ class LoginController extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
-    }
-  }
-
-  bool validateRegister() {
-    if (formKeyCadastroEmail.currentState!.validate() &&
-        formKeyCadastroPassword.currentState!.validate() &&
-        formKeyCadastroConfirmPassword.currentState!.validate() &&
-        formKeyCadastroName.currentState!.validate()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool validateLogin() {
-    if (formKeyLoginEmail.currentState!.validate() && formKeyLoginPassword.currentState!.validate()) {
-      return true;
-    } else {
-      return false;
     }
   }
 }
